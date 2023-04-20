@@ -1,6 +1,5 @@
 import { getPost } from "../Service"
 import { useEffect, useState } from "react"
-import { getLocalStorage } from "../Local"
 function PostCard(props) {
   return (
     <>
@@ -23,7 +22,6 @@ function PostCard(props) {
 
 function Posts() {
   const [post, setPost] = useState({})
-  const [user, setUser] = useState({})
   useEffect(() => {
     getPost()
       .then((res) => {
@@ -31,19 +29,19 @@ function Posts() {
         console.log(res)
       })
       .catch((e) => console.error(e))
-    const userDetails = getLocalStorage()
-    setUser(userDetails)
   }, [])
 
   return (
     <>
-      {post?.limit && (
+      {post?.limit ? (
         <div>
           <h1>Total Post -{post?.limit}</h1>
           {post?.posts.map((item) => (
             <PostCard post={item}></PostCard>
           ))}
         </div>
+      ) : (
+        "Loading..."
       )}
     </>
   )
